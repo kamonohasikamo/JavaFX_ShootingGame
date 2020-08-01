@@ -4,11 +4,8 @@
 *.war
 *.ear
 
-# Eclipse
-.project
-.classpath
-.settings
-build.fxbuild
+# IntelliJ
+.idea
 
 # Idea
 .idea
