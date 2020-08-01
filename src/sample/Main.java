@@ -1,18 +1,15 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    byte[] key = new byte[4];
+    byte[] key = new byte[5];
     Player player;
 
     @Override
@@ -42,6 +39,25 @@ public class Main extends Application {
 
                 // その位置に描画
                 player.draw(gc);
+
+                // Bullet クラスの呼び出し
+                for (int i = 0; i < Define.BULLET_MAX; i++) {
+                    if (player.bullet[i].isBulletExist) {
+                        player.bullet[i].move();
+                        player.bullet[i].draw(gc);
+                    }
+                }
+
+                // Spaceキーを押されたら生成
+                if (key[Define.KEY_SPACE] == 1) {
+                    for (int i = 0; i < Define.BULLET_MAX; i++) {
+                        if (!player.bullet[i].isBulletExist) {
+                            player.bullet[i].enter(player);
+                            break;
+                        }
+                    }
+                }
+
                 try {
                     Thread.sleep(3);
                 } catch(Exception e) {
@@ -71,6 +87,7 @@ public class Main extends Application {
             case LEFT:  key[Define.KEY_LEFT]  = setType; break;
             case UP:    key[Define.KEY_UP]    = setType; break;
             case DOWN:  key[Define.KEY_DOWN]  = setType; break;
+            case SPACE: key[Define.KEY_SPACE] = setType; break;
         }
     }
 
